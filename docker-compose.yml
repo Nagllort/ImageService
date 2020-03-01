@@ -1,0 +1,9 @@
+image-service:
+    build: .
+    ports:
+        - "7878:7878"
+    environment:
+        ENV: DEV
+    volumes:
+        - ./image-service:/image-service
+

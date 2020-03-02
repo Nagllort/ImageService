@@ -1,0 +1,3 @@
+version: 2.1
+orbs:
+  rust: brownjohnf/rust@0.0.11

@@ -16,7 +16,6 @@ use hyper::{Body, Response, StatusCode};
 use gotham::router::builder::*;
 use gotham::router::Router;
 use gotham::state::State;
-use tokio::signal;
 
 #[derive(Deserialize, StateData, StaticResponseExtender)]
 struct PathExtractor {
@@ -36,18 +35,26 @@ fn router() -> Router {
     })
 }
 
-#[tokio::main]
-pub async fn main() {
+pub fn main() {
     let addr = "0.0.0.0:7878";
     println!("Listening for request at http://{}", addr);
     let server = gotham::init_server(addr, router());
 
-    let signal = async {
-        signal::ctrl_c().map_err(|_| ()).await?;
-        Ok::<(), ()>(())
-    };
+    let signal = tokio_signal::ctrl_c()
+        .flatten_stream()
+        .map_err(|error| panic!("Error listening for signal: {}", error))
+        .take(1)
+        .for_each(|()| {
+            println!("Ctrl+C pressed");
+            Ok(())
+        });
 
-    future::select(Box::new(server), Box::new(signal)).await;
+    let serve_util = signal.select(server)
+        .map(|(res,_)| res)
+        .map_err(|(error, _)| error);
+    
+    tokio::run(serve_util);
+    println!("Shutting down gracefully");
 
 }
 

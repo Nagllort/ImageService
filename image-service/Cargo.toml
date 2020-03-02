@@ -13,8 +13,9 @@ serde = "1.0.104"
 serde_derive = "1.0.104"
 mime = "0.3.16"
 hyper = "0.12"
-futures = "0.3.1"
-tokio = { version = "0.2.6", features = ["full"] }
+futures = "0.1"
+tokio = "0.1"
+tokio-signal = "0.2"
 
 [target.'cfg(unix)'.dev-dependencies]
 nix = "0.15"

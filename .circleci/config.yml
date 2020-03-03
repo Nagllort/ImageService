@@ -15,10 +15,6 @@ commands:
       - checkout:
           path: ~/image-service
       - run:
-          name: Go to code directory
-          command: |
-            cd ./image-service  
-      - run:
           name: Checkout submodules
           command: |
             git submodule sync

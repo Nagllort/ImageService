@@ -183,6 +183,6 @@ jobs:
       - test:
           release: <<parameters.release>>
 workflows:
-    workflow:
-        jobs:
-      - check
+  build:
+    jobs:
+      - test

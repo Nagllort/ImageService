@@ -83,7 +83,7 @@ mod tests {
     fn receive_success_image_get_id() {
         let test_server = TestServer::new(router()).unwrap();
         let response = test_server.client()
-            .get("http://localhost/images/123")
+            .get("http://localhost:7878/images/123")
             .perform()
             .unwrap();
         assert_eq!(response.status(), StatusCode::OK);
@@ -93,7 +93,7 @@ mod tests {
     fn receive_missing_image_get_id() {
         let test_server = TestServer::new(router()).unwrap();
         let response = test_server.client()
-            .get("http://localhost/images/abv")
+            .get("http://localhost:7878/images/abv")
             .perform()
             .unwrap();
         assert_eq!(response.status(), StatusCode::NOT_FOUND);
@@ -102,7 +102,7 @@ mod tests {
     #[cfg(unix)]
     fn try_request() -> bool {
         let client = Client::new();
-        let uri = "http://localhost/images";
+        let uri = "http://localhost:7878/images/123";
         let uri_parsed = uri.parse().unwrap();
         let work = client.get(uri_parsed);
 
@@ -110,7 +110,8 @@ mod tests {
 
         match rt.block_on(work) {
             Ok(req) => {
-                assert_eq(req.status, StatusCode::OK);
+                assert_eq!(req.status(), StatusCode::OK);
+                true
             }
 
             Err(error) => {

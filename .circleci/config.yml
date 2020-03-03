@@ -12,8 +12,8 @@ commands:
   checkout_with_submodules:
     description: Check out source code and submodules.
     steps:
-        - checkout:
-            path: ~/image-service
+      - checkout:
+          path: ~/image-service
       - run:
           name: Go to code directory
           command: |

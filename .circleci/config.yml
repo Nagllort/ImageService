@@ -6,12 +6,14 @@ executors:
     description: Executor environment for building Rust crates.
     docker:
       - image: rust:1.41
+    working_directory: ~/image-service/image-service
 
 commands:
   checkout_with_submodules:
     description: Check out source code and submodules.
     steps:
-      - checkout
+        - checkout:
+            path: ~/image-service
       - run:
           name: Go to code directory
           command: |
